@@ -109,17 +109,17 @@ run_crystal() {
 }
 
 
-run_julia_v1() {
-    echo "Running Julia v1" &&
+run_julia_v3() {
+    echo "Running Julia v3" &&
         cd ./julia &&
-        julia -e 'using Pkg; Pkg.add.(["JSON3", "StatsBase", "StructTypes", "LinearAlgebra"])' &&
+        julia -e 'using Pkg; Pkg.add.(["JSON3", "DataStructures", "StructTypes"]); ' &&
         if [ $HYPER == 1 ]; then
-            command hyperfine -r 5 --warmup 1  --show-output "julia related.jl"
+            command hyperfine -r 5 --warmup 1  --show-output "julia related_v3.jl"
         else
-            command time -f '%es %Mk' julia related.jl
+            command time -f '%es %Mk' julia related_v3.jl
         fi
 
-    check_output "related_posts_julia_v1.json"
+    check_output "related_posts_julia_v3.json"
 }
 
 
@@ -134,6 +134,8 @@ run_julia_v2() {
         fi
 
     check_output "related_posts_julia_v2.json"
+}
+
 
 run_odin() {
     echo "Running Odin" &&
@@ -196,9 +198,9 @@ elif [ "$first_arg" = "cr" ]; then
     run_crystal
 
 
-elif [ "$first_arg" = "ju_v1" ]; then
+elif [ "$first_arg" = "ju_v3" ]; then
 
-    run_julia_v1
+    run_julia_v3
 
 elif [ "$first_arg" = "ju_v2" ]; then
 
